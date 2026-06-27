@@ -1,0 +1,25 @@
+services:
+  nginx:
+    build: ./requirements/nginx/
+    ports:
+      - "443:80"
+    networks:
+      - wordpress-network
+    volumes:
+      - website-files:/var/www/html
+networks:
+  wordpress-network:
+    driver: bridge
+volumes:
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/squinn/data/mariadb
+  website-files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/squinn/data/wordpress
