@@ -19,20 +19,8 @@ services:
     volumes:
      - website-files:/var/www/html
     restart: on-failure
-    environment:
-      # データベース接続用
-      WP_DATABASE_HOST: database:3306
-      WP_DATABASE_NAME: ${WP_DATABASE_NAME}
-      WP_DATABASE_USER: ${WP_DATABASE_USER}
-      WP_DATABASE_PASSWORD: ${WP_DATABASE_PASSWORD}
-      # WordPress設定用
-      DOMAIN_NAME: ${DOMAIN_NAME}
-      WP_ADMIN_USER: ${WP_ADMIN_USER}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
-      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
-      WP_USER_NAME: ${WP_USER_NAME}
-      WP_USER_EMAIL: ${WP_USER_EMAIL}
-      WP_USER_PASSWORD: ${WP_USER_PASSWORD}
+    env_file:
+      - .env
 
   database:
     build: ./requirements/database/
@@ -41,6 +29,8 @@ services:
     volumes:
      - mariadb_data:/var/lib/mysql
     restart: on-failure
+    env_file:
+      - .env
 
 networks:
   wordpress-network:
