@@ -5,6 +5,8 @@ set -e
 
 # WordPressのディレクトリに移動
 cd /var/www/html
+chmod 755 /var/www/html
+chown -R www-data:www-data /var/www/html
 
 # wp-config.phpが存在しない場合のみ（初回起動時のみ）インストール処理を行う
 if [ ! -f wp-config.php ]; then
