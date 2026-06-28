@@ -12,4 +12,4 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN mkdir -p /var/run/mysqld && \
     chown -R mysql:mysql /var/run/mysqld
 
-ENTRYPOINT ["entrypoint.sh"]RUN apt update && apt upgrade -y && apt install -y mariadb-server
+ENTRYPOINT ["entrypoint.sh"]
