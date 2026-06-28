@@ -1,4 +1,4 @@
-FROM debian:trixie
+FROM debian:bullseye
 
 # 1. 必要なパッケージのインストール
 # WP-CLIのダウンロード用に curl も追加する
