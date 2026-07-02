@@ -1,5 +1,9 @@
 #!/bin/bash
 
+WP_DATABASE_PASSWORD=$(cat /run/secrets/db_password)
+WP_ADMIN_PASSWORD=$(cat /run/secrets/wordpress_admin_password)
+WP_USER_PASSWORD=$(cat /run/secrets/wordpress_password)
+
 # エラーが発生したら即座にスクリプトを終了する
 set -e
 
@@ -25,10 +29,7 @@ if [ ! -f wp-config.php ]; then
   done
   echo "MariaDB is ready!"
 
-  # 3. WordPressのコアファイルをダウンロード（Dockerfileでやっていない場合）
-  wp core download --allow-root
-
-  # 4. wp-config.php の作成（docker-compose.ymlから渡された環境変数を使用）
+  # 3. wp-config.php の作成（docker-compose.ymlから渡された環境変数を使用）
   wp config create \
     --dbname="$WP_DATABASE_NAME" \
     --dbuser="$WP_DATABASE_USER" \
@@ -36,7 +37,7 @@ if [ ! -f wp-config.php ]; then
     --dbhost="$WP_DATABASE_HOST" \
     --allow-root
 
-  # 5. WordPressの初期インストールと管理者アカウントの作成
+  # 4. WordPressの初期インストールと管理者アカウントの作成
   wp core install \
     --url="$DOMAIN_NAME" \
     --title="My WordPress Site" \
@@ -45,7 +46,7 @@ if [ ! -f wp-config.php ]; then
     --admin_email="$WP_ADMIN_EMAIL" \
     --allow-root
 
-  # 6. 一般ユーザー（authorなどの権限）の作成
+  # 5. 一般ユーザー（authorなどの権限）の作成
   wp user create \
     "$WP_USER_NAME" \
     "$WP_USER_EMAIL" \
@@ -58,6 +59,6 @@ else
   echo "WordPress is already configured."
 fi
 
-# 7. プロセスのすり替え（DockerfileのCMDで指定された 'php-fpm7.4 -F' をPID 1として実行）
+# 6. プロセスのすり替え（DockerfileのCMDで指定された 'php-fpm7.4 -F' をPID 1として実行）
 echo "Starting PHP-FPM..."
 exec "$@"
