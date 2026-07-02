@@ -1,6 +1,8 @@
 services:
   nginx:
     build: ./requirements/nginx/
+    depends_on:
+     - wordpress
     ports:
       - "443:443"
     networks:
@@ -11,7 +13,6 @@ services:
 
   wordpress:
     build: ./requirements/wordpress/
-    restart: always
     depends_on:
      - database
     networks:
@@ -21,6 +22,10 @@ services:
     restart: on-failure
     env_file:
       - .env
+    secrets:
+      - db_password
+      - wordpress_password
+      - wordpress_admin_password
 
   database:
     build: ./requirements/database/
@@ -31,6 +36,9 @@ services:
     restart: on-failure
     env_file:
       - .env
+    secrets:
+      - db_password
+      - db_root_password
 
 networks:
   wordpress-network:
@@ -50,3 +58,13 @@ volumes:
       type: none
       o: bind
       device: /home/squinn/data/wordpress
+
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  wordpress_password:
+    file: ../secrets/wordpress_password.txt
+  wordpress_admin_password:
+    file: ../secrets/wordpress_admin_password.txt
