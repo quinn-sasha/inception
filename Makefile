@@ -1,7 +1,6 @@
 # Configuration
 COMPOSE = docker compose -f srcs/docker-compose.yml
-# VOLUME = /home/squinn/data
-VOLUME = /Users/quinn-sasha-kenta/Documents/inception/
+VOLUME = /home/squinn/data
 
 all : up
 
