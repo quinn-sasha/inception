@@ -35,9 +35,8 @@ clean:
 	@docker rmi $$(docker images -qa) 2>/dev/null || true
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
 	@docker network rm $$(docker network ls -q) 2>/dev/null || true
-	@rm -rf $(VOLUME)
+	@sudo rm -rf $(VOLUME)
 
 fclean: clean
-	@rm -rf $(VOLUME)
 
 re: fclean up
